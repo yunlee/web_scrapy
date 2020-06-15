@@ -62,14 +62,18 @@ def scrape_example(url, word):
     return example_list
 
 import xlrd
-workbook = xlrd.open_workbook("~/Downloads/voc19000-20000.xlsx")
-group  = "Sheet2"
+import sys
+file_name = "12001_13000.xlsx"
+workbook = xlrd.open_workbook(f"~/Downloads/{file_name}")
+group  = sys.argv[1]
+
 worksheet = workbook.sheet_by_name(group)
 print(group)
 word_list = []
 for i in range(worksheet.ncols):
     col = worksheet.col(i)
     word_list += [item.value.strip().replace(" ", "") for item in col if item.value.strip().replace(" ", "")]
+word_list = [w for w in word_list if w.isascii()]
 
 word_example_dict = dict()
 for word in word_list:
